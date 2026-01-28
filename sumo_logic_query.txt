@@ -1,0 +1,7 @@
+_sourceCategory=prod/web/app
+| parse regex "\"path\":\"/api/data\""
+| parse regex "\"response_time\":(?<response_time>\d+)"
+| where response_time > 3000
+| timeslice 10m
+| count as slow_requests by _timeslice
+| where slow_requests > 5
